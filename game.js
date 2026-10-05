@@ -12,7 +12,7 @@ function updateStats(){
  $('moves').textContent=moves;$('score').textContent=score.toLocaleString();
  $('goal').textContent=`${Math.min(collected,stage.target)} / ${stage.target}`;
  $('targetIcon').className='token token-'+stage.type;
- $('goalLabel').textContent=`Collect ${stage.target} ${['stars','hearts','notes','microphones','tickets','gems'][stage.type]}`;
+ $('goalLabel').textContent=`Collect ${stage.target} ${['stars','hearts','notes','beats','tickets','gems'][stage.type]}`;
  $('remaining').textContent=remaining?`${remaining} left to collect`:'Target complete!';
  $('progress').style.width=Math.min(100,collected/stage.target*100)+'%';
  if(collected>lastCollected&&!reducedMotion()&&$('targetIcon').animate){$('targetIcon').animate([{transform:'scale(1)'},{transform:'scale(1.2)'},{transform:'scale(1)'}],{duration:260,easing:'ease-out'});$('goal').animate([{color:'#fff5b1'},{color:'#f5edff'}],{duration:400});}lastCollected=collected;
@@ -31,7 +31,7 @@ function render(){
  }
  board.forEach((tile,i)=>{
   const b=grid.children[i];b.className='tile t'+tile.type+(selected===i?' selected':'');b.dataset.special=tile.special||'';b.children[0].className='token token-'+tile.type;
-  b.setAttribute('aria-label',`${['star','heart','note','microphone','ticket','gem'][tile.type]}, row ${Math.floor(i/8)+1}, column ${i%8+1}${tile.special?', '+tile.special+' power-up':''}`);
+  b.setAttribute('aria-label',`${['star','heart','note','beat','ticket','gem'][tile.type]}, row ${Math.floor(i/8)+1}, column ${i%8+1}${tile.special?', '+tile.special+' power-up':''}`);
   b.setAttribute('aria-selected',String(selected===i));b.setAttribute('aria-disabled',String(busy||finished));
  });
  grid.setAttribute('aria-busy',String(busy));updateStats();
