@@ -15,6 +15,7 @@
   $('tourPlay').textContent=resume?'▶  Resume show':all?'▶  Play headline':'▶  Play';
   $('tourStatus').textContent=resume?`${stages[progress.session.level].name} is waiting for your return.`:all?'Five venues. One unforgettable tour. Replay to improve your stars.':progress.stars.some(Boolean)?`${stages[next()].name} is unlocked. Your next crowd is waiting.`:'Every headline show starts with a first rehearsal.';
   $('tourPlay').onclick=()=>resume?resumeShow():brief(all?4:next());persist();
+  if(typeof requestAnimationFrame==='function')requestAnimationFrame(()=>{const map=document.querySelector('.world-map'),pin=$('tourRoute').children[resume?progress.session.level:all?4:next()];if(map&&pin)map.scrollLeft=Math.max(0,pin.offsetLeft-map.clientWidth/2);});
  }
  function showTour(){if(busy)return;saveSession();finished=true;$('playScreen').hidden=true;$('tour').hidden=false;document.body.dataset.screen='tour';route();$('tourPlay').focus();}
  function brief(n){if(!unlocked(n))return;selectedStop=n;$('briefNumber').textContent=`TOUR STOP ${String(n+1).padStart(2,'0')}`;$('briefTitle').textContent=stages[n].name;$('briefStory').textContent=stories[n];$('briefIcon').className='token token-'+stages[n].type;$('briefGoal').textContent=`Collect ${stages[n].target} ${['stars','hearts','notes','beats','tickets','gems'][stages[n].type]}`;$('briefMoves').textContent=`${stages[n].moves} moves · no timer`;$('briefTip').textContent=tips[n];$('briefing').showModal();}
