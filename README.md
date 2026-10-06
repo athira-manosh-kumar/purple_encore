@@ -34,6 +34,7 @@ In the repository's **Settings → Pages**, select **Deploy from a branch**, cho
 - `style.css`: responsive layout and styling
 - `game.js`: matching, power-ups, level progression, and sound
 - `tour.js`: venue selection, briefings, rewards, unlocks, and local saves
+- `concert-world.webp`: original generated concert island artwork used by the tour and play screen
 - `concert.jpg`: optional original AI-generated concert background (not used by the current interface)
 - `pieces/`: original vector stars, hearts, notes, beats, tickets, and gems
 

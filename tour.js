@@ -10,9 +10,9 @@
  function route(){
   $('tourStars').textContent=progress.stars.reduce((a,b)=>a+b,0);
   $('tourRoute').replaceChildren();
-  stages.forEach((s,i)=>{const button=document.createElement('button');button.className='tour-stop'+(progress.stars[i]?' complete':'')+(!unlocked(i)?' locked':'');button.disabled=!unlocked(i);button.innerHTML=`<span class="stop-number">${unlocked(i)?String(i+1).padStart(2,'0'):'⌑'}</span><span class="stop-name">${s.name}</span><span class="stop-stars" aria-label="${progress.stars[i]} of 3 stars">${'★'.repeat(progress.stars[i])}${'☆'.repeat(3-progress.stars[i])}</span>`;button.setAttribute('aria-label',`${s.name}, ${progress.stars[i]} of 3 stars${!unlocked(i)?', locked':''}`);button.onclick=()=>brief(i);$('tourRoute').appendChild(button);});
+  stages.forEach((s,i)=>{const button=document.createElement('button');button.className='tour-stop'+(progress.stars[i]?' complete':'')+(!unlocked(i)?' locked':'');button.disabled=!unlocked(i);button.innerHTML=`<span class="stop-number">${unlocked(i)?String(i+1):'<svg class="node-lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="10" width="16" height="12" rx="4" fill="currentColor"/></svg>'}</span><span class="stop-name">${s.name}</span><span class="stop-stars" aria-label="${progress.stars[i]} of 3 stars">${'★'.repeat(progress.stars[i])}${'☆'.repeat(3-progress.stars[i])}</span>`;button.setAttribute('aria-label',`${s.name}, ${progress.stars[i]} of 3 stars${!unlocked(i)?', locked':''}`);button.onclick=()=>brief(i);$('tourRoute').appendChild(button);});
   const all=progress.stars.every(Boolean),resume=progress.session&&unlocked(progress.session.level);
-  $('tourPlay').textContent=resume?'Resume your show →':all?'Replay the headline →':'Take the next stage →';
+  $('tourPlay').textContent=resume?'▶  Resume show':all?'▶  Play headline':'▶  Play';
   $('tourStatus').textContent=resume?`${stages[progress.session.level].name} is waiting for your return.`:all?'Five venues. One unforgettable tour. Replay to improve your stars.':progress.stars.some(Boolean)?`${stages[next()].name} is unlocked. Your next crowd is waiting.`:'Every headline show starts with a first rehearsal.';
   $('tourPlay').onclick=()=>resume?resumeShow():brief(all?4:next());persist();
  }
