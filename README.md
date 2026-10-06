@@ -18,7 +18,7 @@ Select a tile, then an adjacent tile to swap. Match three or more identical tile
 
 - Match four to create an Encore tile. Matching it clears its row.
 - Match five to create a Spotlight tile. Swap it with a neighbor to clear that neighbor's color.
-- Use **Hint** for a free hint.
+- Use **Find a match** for a free hint.
 - Use **Restart level** to try a new board.
 - Keyboard: Tab to a tile, arrow keys to move focus, Enter or Space to select.
 
@@ -33,7 +33,7 @@ In the repository's **Settings → Pages**, select **Deploy from a branch**, cho
 - `index.html`: game interface
 - `style.css`: responsive layout and styling
 - `game.js`: matching, power-ups, level progression, and sound
-- `concert.jpg`: original AI-generated concert background
+- `concert.jpg`: optional original AI-generated concert background (not used by the current interface)
 - `pieces/`: original vector stars, hearts, notes, beats, tickets, and gems
 
 The interface uses six original SVG pieces with subtle gradients and optionally loads DM Sans from Google Fonts. System fonts are used if the fonts are unavailable. All artwork, copy, and audio are original or generic; the game does not include artist branding, licensed songs, or recognizable artist likenesses.
