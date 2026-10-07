@@ -7,17 +7,19 @@
  function persist(){try{localStorage.setItem(KEY,JSON.stringify(progress));}catch{storageOK=false;}$('saveNote').textContent=storageOK?'Your tour saves on this device.':'Progress stays in this session. Device storage is unavailable.';}
  function unlocked(n){return n===0||progress.stars[n-1]>0;}
  function next(){return Math.max(0,progress.stars.findIndex(x=>!x));}
+ function currentStop(){return progress.session&&unlocked(progress.session.level)?progress.session.level:progress.stars.every(Boolean)?4:next();}
+ function centerCurrentStage(){const map=document.querySelector('.world-map'),pin=$('tourRoute').children[currentStop()];if(!map||!pin||$('tour').hidden)return;const x=pin.offsetLeft-map.clientWidth/2;map.scrollLeft=Math.min(Math.max(0,x),Math.max(0,map.scrollWidth-map.clientWidth));}
  function route(){
   $('tourStars').textContent=progress.stars.reduce((a,b)=>a+b,0);
   $('tourRoute').replaceChildren();
-  stages.forEach((s,i)=>{const button=document.createElement('button');button.className='tour-stop'+(progress.stars[i]?' complete':'')+(!unlocked(i)?' locked':'');button.disabled=!unlocked(i);button.innerHTML=`<span class="stop-number">${unlocked(i)?String(i+1):'<svg class="node-lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="10" width="16" height="12" rx="4" fill="currentColor"/></svg>'}</span><span class="stop-name">${s.name}</span><span class="stop-stars" aria-label="${progress.stars[i]} of 3 stars">${'★'.repeat(progress.stars[i])}${'☆'.repeat(3-progress.stars[i])}</span>`;button.setAttribute('aria-label',`${s.name}, ${progress.stars[i]} of 3 stars${!unlocked(i)?', locked':''}`);button.onclick=()=>brief(i);$('tourRoute').appendChild(button);});
+  stages.forEach((s,i)=>{const button=document.createElement('button');button.className='tour-stop'+(progress.stars[i]?' complete':'')+(!unlocked(i)?' locked':'');button.disabled=!unlocked(i);if(i===currentStop()){button.className+=' current';button.setAttribute('aria-current','step');}button.innerHTML=`<span class="stop-number">${unlocked(i)?String(i+1):'<svg class="node-lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7a5 5 0 0 1 10 0v3" fill="none" stroke="currentColor" stroke-width="2"/><rect x="4" y="10" width="16" height="12" rx="4" fill="currentColor"/></svg>'}</span><span class="stop-name">${s.name}</span><span class="stop-stars" aria-label="${progress.stars[i]} of 3 stars">${'★'.repeat(progress.stars[i])}${'☆'.repeat(3-progress.stars[i])}</span>`;button.setAttribute('aria-label',`${s.name}, ${progress.stars[i]} of 3 stars${!unlocked(i)?', locked':''}`);button.onclick=()=>brief(i);$('tourRoute').appendChild(button);});
   const all=progress.stars.every(Boolean),resume=progress.session&&unlocked(progress.session.level);
   $('tourPlay').textContent=resume?'▶  Resume show':all?'▶  Play headline':'▶  Play';
   $('tourStatus').textContent=resume?`${stages[progress.session.level].name} is waiting for your return.`:all?'Five venues. One unforgettable tour. Replay to improve your stars.':progress.stars.some(Boolean)?`${stages[next()].name} is unlocked. Your next crowd is waiting.`:'Every headline show starts with a first rehearsal.';
   $('tourPlay').onclick=()=>resume?resumeShow():brief(all?4:next());persist();
-  if(typeof requestAnimationFrame==='function')requestAnimationFrame(()=>{const map=document.querySelector('.world-map'),pin=$('tourRoute').children[resume?progress.session.level:all?4:next()];if(map&&pin)map.scrollLeft=Math.max(0,pin.offsetLeft-map.clientWidth/2);});
+  if(typeof requestAnimationFrame==='function')requestAnimationFrame(centerCurrentStage);
  }
- function showTour(){if(busy)return;saveSession();finished=true;$('playScreen').hidden=true;$('tour').hidden=false;document.body.dataset.screen='tour';route();$('tourPlay').focus();}
+ function showTour(){if(busy)return;saveSession();finished=true;$('playScreen').hidden=true;$('tour').hidden=false;document.body.dataset.screen='tour';route();$('tourPlay').focus({preventScroll:true});}
  function brief(n){if(!unlocked(n))return;selectedStop=n;$('briefNumber').textContent=`TOUR STOP ${String(n+1).padStart(2,'0')}`;$('briefTitle').textContent=stages[n].name;$('briefStory').textContent=stories[n];$('briefIcon').className='token token-'+stages[n].type;$('briefGoal').textContent=`Collect ${stages[n].target} ${['stars','hearts','notes','beats','tickets','gems'][stages[n].type]}`;$('briefMoves').textContent=`${stages[n].moves} moves · no timer`;$('briefTip').textContent=tips[n];$('briefing').showModal();}
  function enter(){ $('tour').hidden=true;$('playScreen').hidden=false;document.body.dataset.screen='play';document.body.dataset.venue=String(level);$('feedback').textContent=stories[level];updateStats();$('backTour').focus(); }
  function launch(n){start(n);enter();saveSession();}
@@ -30,5 +32,6 @@
  function $(id){return document.getElementById(id);}
  document.querySelector('.brand').addEventListener('click',e=>{e.preventDefault();if(!busy){$('result').close();$('briefing').close();showTour();}});
  $('restart').onclick=()=>{if(!busy){start(level);enter();saveSession();}};
+ if(typeof ResizeObserver==='function'){const observer=new ResizeObserver(()=>{if(typeof requestAnimationFrame==='function')requestAnimationFrame(centerCurrentStage);});observer.observe(document.querySelector('.world-map'));observer.observe($('tourRoute'));}
  finished=true;$('playScreen').hidden=true;document.body.dataset.screen='tour';route();
 })();
