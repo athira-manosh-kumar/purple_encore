@@ -1,6 +1,6 @@
 # Purple Encore
 
-An original purple concert-themed match-three browser game with five levels, row-clearing Encore tiles, color-clearing Spotlight tiles, hints, and optional synthesized sound.
+An original purple concert-themed match-three browser game with ten stages, directional laser tiles, colour-clearing Galaxy bombs, hints, and optional synthesized sound.
 
 ## Play locally
 
@@ -16,8 +16,8 @@ Then open http://localhost:4173.
 
 Select a tile, then an adjacent tile to swap. Match three or more identical tiles to collect them. Invalid swaps cost no move. Meet the collection goal before running out of moves.
 
-- Match four to create an Encore tile. Matching it clears its row.
-- Match five to create a Spotlight tile. Swap it with a neighbor to clear that neighbor's color.
+- Match four to create a laser. Its arrows show whether matching it clears a row or column.
+- Match five to create a Galaxy bomb. Swap it with a neighbor to clear that neighbor's color.
 - Use **Find a match** for a free hint.
 - Use **Restart level** to try a new board.
 - Keyboard: Tab to a tile, arrow keys to move focus, Enter or Space to select.
@@ -45,3 +45,8 @@ The browser WebMCP API is feature-detected. In supported browsers it exposes gam
 ## Concert tour
 
 Choose an unlocked venue, read its goal, and take the stage. Each completed venue unlocks the next. Completing the goal earns one star; finishing with at least 15% of starting moves earns two, and at least 40% earns three. Replays keep your best stars and score. The energy meter reflects collection progress. Returning to the tour pauses the show, and Resume restores the same board and remaining moves. No licensed songs or artist assets are used.
+
+## Tour and preparation
+Ten stages are split into Afterglow and Nightwave. Completed venues offer Replay; unfinished shows offer Resume; the next unlocked venue is highlighted. Existing five-stage saves migrate without losing stars or an unfinished show.
+
+Starting power-ups are optional and free in this prototype: an adjacent row/column laser pair, a galaxy bomb, or both. During a show, Clear tile, Shuffle and +3 moves each have one use. Counts and the board persist on resume. Clear tile triggers power-ups and cascades without spending a move; Shuffle preserves special pieces and produces a playable board. Pippa and Orbit are original SVG companions.
